@@ -24,6 +24,8 @@ helloworldmaster:
 # Create a Hello World instance for writing data.
 helloworldwrite:
   build: .
+  volumes:
+    - .:/home/eris/.eris/dapps/helloworld
 
   links:
    - compilers
@@ -44,6 +46,8 @@ helloworldwrite:
 helloworldread:
   build: .
 
+  volumes:
+    - .:/home/eris/.eris/dapps/helloworld
   links:
    - compilers
    - ipfs
