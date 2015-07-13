@@ -7,7 +7,9 @@ helloworldone:
    - "3000:3000"
    - "5001:5001"
   volumes:
+    - ../decerver:/usr/src/app
     - source:/usr/src/app/local
+  command: sh -c "/usr/src/app/ipfs.sh; sleep infinity"
 
 helloworldtwo:
   image: eris/decerver:browser
@@ -17,6 +19,7 @@ helloworldtwo:
    # for debugging
    - "3001:3000"
   volumes:
+    - ../decerver:/usr/src/app
     - source:/usr/src/app/local
 
 seleniumhub:
@@ -40,4 +43,4 @@ helloworldtest:
    - seleniumhub:selenium
   volumes:
     - test:/usr/src/app
-  command: sh -c "cd /usr/src/app; npm install && npm start"
+  working_dir: /usr/src/app

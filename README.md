@@ -21,6 +21,15 @@ The application communicates with the Decerver using the IPFS protocol.  It is e
 1.  See the dapp by opening `http://localhost:3000` in a browser.
 1.  Whenever you make a change to a JavaScript file (such as `HelloWorld.js`), you need to re-bundle it before you can see the change reflected in the browser.  Do this by re-running the command `npm run build` and then refresh your browser.
 
+## Development of Decerver and Hello World tests
+
+These scripts assuming that Decerver is in the `../decerver` directory.
+
+1.  Run `run-helloworldone.sh` in one window.
+2.  Type `npm start` to start Decerver.
+3.  Run `run-hellworldtest.sh` in another window.
+4.  Type `npm start` to start the tests.
+
 # Copyright
 
 Copyright 2015 Eris Industries
