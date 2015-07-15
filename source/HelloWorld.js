@@ -64,7 +64,7 @@ function setItem(key, value, index) {
   name = "Eris Industries/Hello World/" + key + "/" + index;
 
   return ipfs.addAsync(new Buffer(name)).then(function (nameResult) {
-    return ipfs.dht.getAsync(nameResult.Hash).then(
+    return ipfs.dht.getAsync(nameResult[0].Hash).then(
       function () {
         console.log("Found an entry for " + key + " at index " + index
           + ".");

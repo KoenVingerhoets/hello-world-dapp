@@ -16,7 +16,7 @@ module.exports = {
 
   "Jasmine tests": function (browser) {
     browser
-      .url('http://helloworldone:3000/jasmine/SpecRunner.html')
+      .url('http://helloworldone:5001/jasmine/SpecRunner.html')
       .waitForElementVisible('//*[contains(@class, "bar")]')
 
       // This isn't working for some reason so we implement it ourselves.  Maybe
@@ -43,7 +43,7 @@ module.exports = {
 
   "missing file": function (browser) {
     browser
-      .url('http://helloworldone:3000/')
+      .url('http://helloworldone:5001/')
       .waitForElementPresent('//input[@id="filenameGet"]')
       .setValue('//*[@id="filenameGet"]', "centralized")
       .click('(//button)[2]')
@@ -81,7 +81,7 @@ module.exports = {
 
   "get file from two": function (browser) {
     browser
-      .url('http://helloworldtwo:3000/')
+      .url('http://helloworldtwo:5001/')
       .waitForElementPresent('//input[@id="filenameGet"]')
       .clearValue('//*[@id="filenameGet"]')
       .setValue('//*[@id="filenameGet"]', name)
@@ -110,7 +110,7 @@ module.exports = {
 
   "get changed file from two": function (browser) {
     browser
-      .url('http://helloworldtwo:3000/')
+      .url('http://helloworldtwo:5001/')
       .waitForElementPresent('//input[@id="filenameGet"]')
       .clearValue('//*[@id="filenameGet"]')
       .setValue('//*[@id="filenameGet"]', name)
@@ -125,7 +125,7 @@ module.exports = {
 
   "get changed file from one": function (browser) {
     browser
-      .url('http://helloworldone:3000/')
+      .url('http://helloworldone:5001/')
       .waitForElementPresent('//input[@id="filenameGet"]')
       .clearValue('//*[@id="filenameGet"]')
       .setValue('//*[@id="filenameGet"]', name)
