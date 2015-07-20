@@ -1,6 +1,6 @@
 'use strict';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;
 
 describe("Hello World", function () {
   var
