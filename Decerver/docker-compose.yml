@@ -1,24 +1,24 @@
 helloworldone:
-  image: eris/decerver:browser
+  build: ../../decerver
   environment:
    - SOURCE
   ports:
    # for debugging
    - "5001:5001"
   volumes:
-    - ../decerver:/usr/src/app
+    - ../../decerver:/usr/src/app
     - source:/usr/src/app/local
   command: sh -c "/usr/src/app/ipfs.sh; sleep infinity"
 
 helloworldtwo:
-  image: eris/decerver:browser
+  build: ../../decerver
   environment:
    - SOURCE
   ports:
    # for debugging
-   - "3001:3000"
+   - "5002:5001"
   volumes:
-    - ../decerver:/usr/src/app
+    - ../../decerver:/usr/src/app
     - source:/usr/src/app/local
 
 seleniumhub:
@@ -32,8 +32,8 @@ seleniumnode:
    - seleniumhub:hub
    - helloworldone
    - helloworldtwo
-  # Attach VNC to this port for debugging.  The password is 'secret'.
   ports:
+   # Attach VNC to this port for debugging.  The password is 'secret'.
    - "5900:5900"
 
 helloworldtest:
@@ -43,3 +43,4 @@ helloworldtest:
   volumes:
     - test:/usr/src/app
   working_dir: /usr/src/app
+  command: bash

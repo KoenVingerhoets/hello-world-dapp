@@ -1,0 +1,36 @@
+helloworldone:
+  image: eris/decerver:browser
+  ports:
+   # for debugging
+   - "5001:5001"
+  volumes:
+    - source:/usr/src/app/local
+
+helloworldtwo:
+  image: eris/decerver:browser
+  volumes:
+    - source:/usr/src/app/local
+
+seleniumhub:
+  image: selenium/hub:latest
+  expose:
+   - "4444"
+
+seleniumnode:
+  image: selenium/node-chrome-debug:latest
+  links:
+   - seleniumhub:hub
+   - helloworldone
+   - helloworldtwo
+  ports:
+   # Attach VNC to this port for debugging.  The password is 'secret'.
+   - "5900:5900"
+
+helloworldtest:
+  image: node:0.10
+  links:
+   - seleniumhub:selenium
+  volumes:
+    - test:/usr/src/app
+  working_dir: /usr/src/app
+  command: sh -c "npm install && npm test"

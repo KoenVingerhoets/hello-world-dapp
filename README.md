@@ -1,7 +1,7 @@
 # Hello World
 
 This application demonstrates simple name registration using the Eris Decerver
-and IPFS.  No blockchains nor smart contracts are employed (yet).
+and [IPFS](http://ipfs.io/).  No blockchains nor smart contracts are employed (yet).
 
 Requirements:
 
@@ -14,21 +14,10 @@ The application communicates with the Decerver using the IPFS protocol.  It is e
 
 ## Development
 
-1.  Open a shell in the `source` directory and leave it open.  Run the following commands:
-1.  `npm install`
-1.  `npm run build`
-1.  `develop.sh`.  It will start a server container and a test container.
-1.  See the dapp by opening `http://localhost:3000` in a browser.
+1.  Open a shell in the `source` directory and leave it open.
+1.  Run `dev.sh`.  It will start a server container and a test container.
+1.  See the dapp by opening `http://localhost:5001` in a browser.
 1.  Whenever you make a change to a JavaScript file (such as `HelloWorld.js`), you need to re-bundle it before you can see the change reflected in the browser.  Do this by re-running the command `npm run build` and then refresh your browser.
-
-## Development of Decerver and Hello World tests
-
-These scripts assuming that Decerver is in the `../decerver` directory.
-
-1.  Run `run-helloworldone.sh` in one window.
-2.  Type `npm start` to start Decerver.
-3.  Run `run-hellworldtest.sh` in another window.
-4.  Type `npm start` to start the tests.
 
 # Copyright
 
