@@ -14,6 +14,7 @@
 
 var
   alertify = require('alertifyjs'),
+  concat = require('concat-stream'),
   Promise = require('bluebird'),
   ipfs = require('ipfs-api')(window.location.hostname);
 
@@ -28,26 +29,41 @@ module.exports = {
   addFile: addFile
 };
 
+function keyToBuffer(key, index) {
+  return new Buffer("Eris Industries/Hello World/" + key + "/" + index);
+}
+
 // Get a value from IPFS.
 function getItem(key, index, previousName) {
-  var
-    name;
-
   index = index || 1;
-  name = "Eris Industries/Hello World/" + key + "/" + index;
 
-  return ipfs.addAsync(new Buffer(name)).then(function (nameResult) {
-    return ipfs.dht.getAsync(nameResult.Hash).then(
+  return ipfs.addAsync(keyToBuffer(key, index)).then(function (nameResult) {
+    var
+      hash;
+
+    hash = nameResult[0].Hash;
+
+    return ipfs.dht.getAsync(hash).then(
       function () {
-        console.log("Found an entry for " + key + " at index " + index
-          + ".");
-
-        return getItem(key, index + 1, nameResult.Hash);
+        console.log("Found an entry for " + key + " at index " + index + ".");
+        return getItem(key, index + 1, hash);
       },
-      function () {
+      function (response) {
         if (previousName)
-          return ipfs.dht.getAsync(previousName).then(function (value) {
-            return ipfs.catAsync(value);
+          return ipfs.dht.getAsync(previousName).then(function (valueHash) {
+            // We create our own promise here insead of using the promisified
+            // version of ipfs.cat because using that function causes a delay
+            // long enough for us to miss incoming data in the stream.  A better
+            // solution would be for the libraries we depend on to use a
+            // buffered stream, etc., that isn't so sensitive to timing.
+            return new Promise(function (resolve, reject) {
+              ipfs.cat(valueHash, function (error, stream) {
+                if (error)
+                  reject(error);
+                else
+                  resolve(stream.pipe(concat()));
+              });
+            });
           });
         else
           throw new ReferenceError(key + " not found.");
@@ -57,24 +73,23 @@ function getItem(key, index, previousName) {
 
 // Store a key/value pair in IPFS.
 function setItem(key, value, index) {
-  var
-    name;
-
   index = index || 1;
-  name = "Eris Industries/Hello World/" + key + "/" + index;
 
-  return ipfs.addAsync(new Buffer(name)).then(function (nameResult) {
-    return ipfs.dht.getAsync(nameResult[0].Hash).then(
+  return ipfs.addAsync(keyToBuffer(key, index)).then(function (nameResult) {
+    var
+      hash;
+
+    hash = nameResult[0].Hash;
+
+    return ipfs.dht.getAsync(hash).then(
       function () {
-        console.log("Found an entry for " + key + " at index " + index
-          + ".");
-
+        console.log("Found an entry for " + key + " at index " + index + ".");
         return setItem(key, value, index + 1);
       },
       function () {
         return ipfs.addAsync(new Buffer(value)).then(function (valueResult) {
           console.log("Storing " + [key, value] + " at index " + index + ".");
-          return ipfs.dht.putAsync(nameResult.Hash, valueResult.Hash);
+          return ipfs.dht.putAsync(hash, valueResult[0].Hash);
         });
       });
   });
