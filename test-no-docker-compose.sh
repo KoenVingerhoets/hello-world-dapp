@@ -29,22 +29,10 @@ docker run -d -p 3001:3000 -e CONTAINERS=true --expose=15254 --expose=3000 \
   --link=compilers:compilers --link=ipfs:ipfs --link=helloworldmaster:helloworldmaster \
   -e ROOT_CONTRACT=$ROOT_CONTRACT --link=helloworldwrite:helloworldwrite --name=helloworldread 2gather
 
-docker run -d --expose=4444 --name=seleniumhub selenium/hub:latest
-docker run -d --link=seleniumhub:hub --link=helloworldwrite:helloworldwrite \
-  --link=helloworldread:helloworldread -p 5900:5900 --name=seleniumchrome \
-  selenium/node-chrome:latest
-
-cd test
-docker build -t hw_test .
-docker run --name helloworldtester --link=seleniumhub:selenium hw_test
-cd ..
-
 # shutdown
 docker kill compilers && docker rm compilers
 docker kill ipfs && docker rm ipfs
 docker kill helloworldmaster && docker rm helloworldmaster
 docker kill helloworldwrite && docker rm helloworldwrite
 docker kill helloworldread && docker rm helloworldread
-docker kill seleniumhub && docker rm seleniumhub
-docker kill seleniumchrome && docker rm seleniumchrome
-docker kill helloworldtester && docker rm helloworldtester
+docker rmi 2gather

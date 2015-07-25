@@ -10,7 +10,7 @@ ipfs:
 
 # Run a blockchain only on the master.
 helloworldmaster:
-  image: eris/erisdb:latest
+  image: eris/erisdb:0.9
 
   expose:
    - "15254"
@@ -24,8 +24,6 @@ helloworldmaster:
 # Create a Hello World instance for writing data.
 helloworldwrite:
   build: .
-  volumes:
-    - .:/home/eris/.eris/dapps/helloworld
 
   links:
    - compilers
@@ -46,8 +44,6 @@ helloworldwrite:
 helloworldread:
   build: .
 
-  volumes:
-    - .:/home/eris/.eris/dapps/helloworld
   links:
    - compilers
    - ipfs

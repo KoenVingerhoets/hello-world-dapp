@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd ~/.eris/dapps/helloworld
+cd $ERIS/dapps/helloworld
 
 echo ""
 echo ""
@@ -41,7 +41,7 @@ epm --log ${LOG_LEVEL:=3} run & sleep 2 && kill $(epm plop pid)
 
 # Capture the primary variables
 BLOCKCHAIN_ID=$(epm plop chainid)
-if [ -z $ROOT_CONTRACT ] || [ $ROOT_CONTRACT == "" ]
+if [ -z $ROOT_CONTRACT ] || [ $ROOT_CONTRACT = "" ]
 then
   ROOT_CONTRACT=$(epm plop vars | cut -d : -f 2)
 fi
@@ -53,13 +53,13 @@ echo "ROOT_CONTRACT ($ROOT_CONTRACT) and "
 echo "PEER_SERVER ($remote_host:$remote_port)"
 mv package.json /tmp/
 jq '.module_dependencies[0].data |= . * {peer_server_address: "'$remote_host:$remote_port'", blockchain_id: "'$BLOCKCHAIN_ID'", root_contract: "'$ROOT_CONTRACT'"}' /tmp/package.json \
-    > ~/.eris/dapps/helloworld/package.json
+    > $ERIS/dapps/helloworld/package.json
 
 echo ""
 echo ""
 echo "My package.json now looks like this."
 # this is here for debugging, feel free to remove
-cat ~/.eris/dapps/helloworld/package.json
+cat $ERIS/dapps/helloworld/package.json
 
 echo ""
 echo ""

@@ -3,9 +3,9 @@ MAINTAINER Eris Industries <support@erisindustries.com>
 
 USER root
 
-COPY . /home/$user/.eris/dapps/helloworld/
-RUN chown --recursive $user:$user /home/$user
+COPY . $ERIS/dapps/helloworld/
+RUN chown $USER -R $ERIS/dapps/helloworld/
 
-USER $user
+USER $USER
 
-CMD /home/$user/.eris/dapps/helloworld/start.sh
+CMD $ERIS/dapps/helloworld/start.sh

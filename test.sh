@@ -1,11 +1,18 @@
 #!/bin/sh
 
+dc_version=$(docker-compose --version | grep docker-compose | cut -c 25-27)
+corrigendum=""
+
+if [ "1.3" = "$dc_version" ]; then
+  corrigendum="--no-deps"
+fi
+
 # start the background containers
-docker-compose up --no-recreate -d compilers ipfs helloworldmaster
+docker-compose up $corrigendum --no-recreate -d compilers ipfs helloworldmaster
 sleep 5 # give the master a bit of time to get everything sorted
 
 # start the writer
-docker-compose up --no-recreate -d helloworldwrite
+docker-compose up $corrigendum --no-recreate -d helloworldwrite
 sleep 30 # give the writer time to catch up with master and deploy contracts
 
 # grab the root contract from the writer
@@ -20,7 +27,8 @@ echo $ROOT_CONTRACT
 echo ""
 
 # start the reader
-docker-compose up -d --no-recreate helloworldread
+docker-compose up -d $corrigendum --no-recreate helloworldread
 
-docker-compose up -d --no-recreate seleniumnode
+docker-compose up -d $corrigendum --no-recreate seleniumhub
+docker-compose up -d $corrigendum --no-recreate seleniumnode
 docker-compose run helloworldtest
